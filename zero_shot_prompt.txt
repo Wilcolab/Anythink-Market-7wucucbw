@@ -1,0 +1,29 @@
+// convertToSnakeCase.js
+// Simple, robust function to convert arbitrary text to snake_case.
+
+function convertToSnakeCase(input) {
+    if (input == null) return '';
+    const str = String(input)
+        .normalize('NFKD')                       // decompose accents
+        .replace(/[\u0300-\u036f]/g, '')         // remove diacritics
+        // Split boundary like "HTMLParser" -> "HTML_Parser" and "myVar" -> "my_Var"
+        .replace(/([A-Z]+)([A-Z][a-z0-9])/g, '$1_$2')
+        .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+        // Convert separators (spaces, dashes, dots, slashes, etc.) to underscores
+        .replace(/[\s\-\.\u2013\u2014\/]+/g, '_')
+        // Remove any remaining non-alphanumeric/underscore characters
+        .replace(/[^A-Za-z0-9_]+/g, '')
+        // Collapse multiple underscores and trim
+        .replace(/_+/g, '_')
+        .replace(/^_+|_+$/g, '')
+        .toLowerCase();
+
+    return str;
+}
+
+// Example usage
+// console.log(convertToSnakeCase("Hello World!"));          // "hello_world"
+// console.log(convertToSnakeCase("XMLHttpRequest"));       // "xml_http_request"
+// console.log(convertToSnakeCase("  multiple---separators ")); // "multiple_separators"
+
+module.exports = convertToSnakeCase;
