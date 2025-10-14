@@ -1,0 +1,34 @@
+/**
+ * Convert a string to snake_case.
+ * - preserves ASCII letters and digits
+ * - converts CamelCase and spaces/symbols to underscores
+ * - removes diacritics (accents)
+ * - collapses multiple separators and trims edge underscores
+ *
+ * Example:
+ *   toSnakeCase("HelloWorld!")      -> "hello_world"
+ *   toSnakeCase("  Föö Bar-baz42 ") -> "foo_bar_baz42"
+ */
+
+function toSnakeCase(input) {
+    if (input == null) return '';
+    const s = String(input).trim();
+    if (s.length === 0) return '';
+
+    return s
+        .normalize('NFKD')                      // decompose accented chars
+        .replace(/[\u0300-\u036f]/g, '')        // remove combining diacritics
+        .replace(/([a-z0-9])([A-Z])/g, '$1_$2') // split camelCase boundaries
+        .replace(/[^A-Za-z0-9]+/g, '_')         // non-alphanum -> underscore
+        .replace(/^_+|_+$/g, '')                // trim leading/trailing underscores
+        .toLowerCase();
+}
+
+// CommonJS and ES module exports
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = toSnakeCase;
+}
+if (typeof exports !== 'undefined') {
+    exports.toSnakeCase = toSnakeCase;
+}
+export default toSnakeCase;
