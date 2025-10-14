@@ -15,3 +15,5 @@ if (!module.parent) {
 }
 
 module.exports = app;
+
+// hello world endpoint
